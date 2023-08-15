@@ -1,49 +1,40 @@
 #  Music PlayList
 
   ## Database Model
-  ### playlist table
-  - id -> uuid
-  - title -> playlist name
-  - moods -> mtm relation to have all moods for filtering
-  - genres -> mtm relation to have all genres for filtering
-  - created_at -> time added
-  - updated_at -> time modified
-  ### playlist_track
-  - id -> uuid
-  - playlist_id -> fk for playlist table
-  - track_id -> fk for track table
-  - is first -> first track in the playlist
-  - next_playlist_track -> fk to playlist_track to get next track
+  ### `playlist` table
+  | key | Description | type|
+  | -- | -- | -- |
+  | id | unique ID | UUID |
+  | title | Playlist Name | string |
+  | moods | mtm relation to having all moods for filtering  | list of foreign keys |
+  | genres | mtm relation to having all genres for filtering | list of foreign keys |
+  | created_at | time added | timezone format |
+  | updated_at | time modified | timezone format |
+  ###  `playlist_track` table
+  | key | Description | type|
+  | -- | -- | -- |
+  | id | unique ID | UUID |
+  | playlist_id | foreign key of playlist id reference unique with track_id | UUID |
+  | track_id | foreign key of playlist id reference unique with track_id | UUID |
+  | is_first | first track in the playlist, default False | Boolean |
+  | next_playlist_track | fk to playlist_track to get next track | UUID |
 
   #### Explaint
-    Modeling playlist_track table to be like linked list where it's more accsible to build playlist and re-order it.
+    Modeling playlist_track table to be a linked list where it's more accessible to build a playlist and re-order it.
    
 ## API
-  - GET     /playlist/:pk/
-    get playlist returning serlized data of playlist
-  
-  - LIST    /playlist/?page=
-    listing with pagination for playlists
-  
-  - POST    /playlist/ -> request body -> {title: string}
-    create playlist
-  
-  - DELETE  /playlist/:pk/
-    delete playlist
-  
-  - LIST    /playlist/?playlist_id=uuid
-    get tracks of the playlist by id
-  
-  - DELETE  /playlist_track/:pk/
-    delete track from playlist with keeping the order
-  
-  - PATCH   /playlist_track/:pk/  -> request body -> {'next_playlist_track_id': uuid}
-    reorder the track by using uuid of track_playlist as pk and the next track after next_playlist_track_id 
-  
-  - GET     /playlist_track/:pk/  
-    get playlist details
+  | Request Method | url | Description | 
+  | -- | -- | -- |
+  | GET | /playlist/:pk/ | get playlist returning serialized data of playlist |
+  | LIST | /playlist/?page=int |  listing with pagination for playlists |
+  | POST | /playlist/ |  request body -> {title: string}, create playlist |
+  | DELETE | /playlist/:pk/ | delete playlist |
+  | LIST  | /playlist/?playlist_id=uuid | get tracks of the playlist by id | 
+  | DELETE | /playlist_track/:pk/ | Delete the track from the playlist with keeping the order |
+  | PATCH | /playlist_track/:pk/ |  request body -> {'next_playlist_track_id': uuid} |reorder the track by using UUID of track_playlist as pk and the next track after next_playlist_track_id |
+  | GET | /playlist_track/:pk/ | get playlist details |
 
-## things to be done if i have time:
+## Things to be done if I have time:
   - Swagger file
   - Unit test
   - docker for unit test.
